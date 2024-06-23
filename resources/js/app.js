@@ -1,5 +1,6 @@
 import './bootstrap';
 import '../css/app.css';
+import '@purge-icons/generated';
 
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
