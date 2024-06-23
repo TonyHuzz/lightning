@@ -1,15 +1,15 @@
 <template>
-    <Head title="hello world123" />
-
-    <div>
-        <Link href="/">Home</Link>
-        <Link href="/about">About</Link>
+    <div class="container py-8">
+        <div class="space-x-3 pb-2 border-b border-purple-200">
+            <Link href="/" class="link">Home</Link>
+            <Link href="/about" class="link">About</Link>
+        </div>
+        <h1 class="text-2xl mt-2">Hello {{ name }}</h1>
     </div>
-    <h1>Hello {{ name }}</h1>
 </template>
 
 <script setup>
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 
 defineProps({
     name: {
