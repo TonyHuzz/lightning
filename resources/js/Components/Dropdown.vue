@@ -1,77 +1,48 @@
-<script setup>
-import { computed, onMounted, onUnmounted, ref } from 'vue';
-
-const props = defineProps({
-    align: {
-        type: String,
-        default: 'right',
-    },
-    width: {
-        type: String,
-        default: '48',
-    },
-    contentClasses: {
-        type: String,
-        default: 'py-1 bg-white',
-    },
-});
-
-const closeOnEscape = (e) => {
-    if (open.value && e.key === 'Escape') {
-        open.value = false;
-    }
-};
-
-onMounted(() => document.addEventListener('keydown', closeOnEscape));
-onUnmounted(() => document.removeEventListener('keydown', closeOnEscape));
-
-const widthClass = computed(() => {
-    return {
-        48: 'w-48',
-    }[props.width.toString()];
-});
-
-const alignmentClasses = computed(() => {
-    if (props.align === 'left') {
-        return 'ltr:origin-top-left rtl:origin-top-right start-0';
-    } else if (props.align === 'right') {
-        return 'ltr:origin-top-right rtl:origin-top-left end-0';
-    } else {
-        return 'origin-top';
-    }
-});
-
-const open = ref(false);
-</script>
-
 <template>
-    <div class="relative">
-        <div @click="open = !open">
-            <slot name="trigger" />
-        </div>
-
-        <!-- Full Screen Dropdown Overlay -->
-        <div v-show="open" class="fixed inset-0 z-40" @click="open = false"></div>
-
+    <div class="relative z-50">
+        <slot name="button" :open="open" />
+        <button v-if="isOpen" @click="close" tabindex="-1" class="fixed z-40 inset-0 h-full w-full cursor-default"></button>
         <Transition
-            enter-active-class="transition ease-out duration-200"
-            enter-from-class="opacity-0 scale-95"
-            enter-to-class="opacity-100 scale-100"
-            leave-active-class="transition ease-in duration-75"
-            leave-from-class="opacity-100 scale-100"
-            leave-to-class="opacity-0 scale-95"
+            enter-from-class="opacity-0 scale-90"
+            enter-active-class="transition ease-out duration-150 origin-top-right"
+            enter-to-class="opacity-1 scale-100"
+            leave-from-class="opacity-1 scale-100"
+            leave-active-class="transition duration-150 ease-in origin-top-right"
+            leave-to-class="opacity-0 scale-90"
         >
-            <div
-                v-show="open"
-                class="absolute z-50 mt-2 rounded-md shadow-lg"
-                :class="[widthClass, alignmentClasses]"
-                style="display: none"
-                @click="open = false"
-            >
-                <div class="rounded-md ring-1 ring-black ring-opacity-5" :class="contentClasses">
-                    <slot name="content" />
-                </div>
+            <div v-if="isOpen" class="absolute z-50 right-0 mt-4 py-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg transform">
+                <slot name="menu" :close="close" />
             </div>
         </Transition>
     </div>
 </template>
+
+
+<script setup>
+import {onBeforeUnmount, onMounted, ref} from 'vue';
+
+const isOpen = ref(false);
+
+const open = () => {
+    isOpen.value = true;
+}
+
+const close = () => {
+    isOpen.value = false;
+}
+
+onMounted(() => {
+    const handleEscape = (e) => {
+        if (['Esc', 'Escape'].includes(e.key)) {
+            isOpen.value = false;
+        }
+    }
+
+    document.addEventListener('keydown', handleEscape);
+    onBeforeUnmount(() => {
+        document.removeEventListener('keydown', handleEscape);
+    })
+})
+
+
+</script>
