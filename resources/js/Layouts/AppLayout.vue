@@ -11,7 +11,7 @@
 
                 <nav>
                     <ul class="flex text-sm md:text-base space-x-1 md:space-x-4 items-center">
-                        <template v-if="false">
+                        <template v-if="!user">
                             <li>
                                 <Link :href="$route('login')" class="px-3 py-2 md:px-5 rounded text-gray-400 hover:text-gray-900 transition-colors duration-150">
                                     登入
@@ -32,7 +32,7 @@
                                         </button>
                                     </template>
                                     <template #menu="{ close }">
-                                        <DropdownItem href="/" icon="heroicons-outline:logout" @click="close">
+                                        <DropdownItem :href="$route('logout')" method="post" as="button" icon="heroicons-outline:logout" @click="close">
                                             登出
                                         </DropdownItem>
                                     </template>
@@ -51,15 +51,13 @@
 </template>
 
 <script setup>
-import { Link } from '@inertiajs/vue3';
+import {Link, usePage} from '@inertiajs/vue3';
 import Icon from "@/Components/Icon.vue";
 import Dropdown from "@/Components/Dropdown.vue";
 import DropdownItem from "@/Components/DropdownItem.vue";
-import {reactive} from "vue";
+import {computed} from "vue";
 
-const user = reactive({
-    user: 'Tony',
-    avatar: 'https://www.gravatar.com/avatar/',
-})
+const page = usePage()
 
+const user = computed(() => page.props.auth?.user)
 </script>
