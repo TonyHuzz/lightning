@@ -1,5 +1,5 @@
 <template>
-    <Link :href="href" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 focus:bg-gray-100">
+    <Link :href="href" :method="method" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 focus:bg-gray-100">
         <template v-if="icon">
             <Icon :icon="icon" :style="'mr-2'" />
             <slot />
@@ -21,6 +21,7 @@ defineProps({
     icon: {
         type: String,
     },
+    method: String,
 });
 
 </script>
