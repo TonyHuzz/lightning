@@ -12,6 +12,12 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
 import Icon from "@/Components/Icon.vue";
+import AppLayout from "@/Layouts/AppLayout.vue";
+
+// 定義專案Layout使用AppLayout
+defineOptions({
+    layout: AppLayout,
+})
 
 defineProps({
     name: {
