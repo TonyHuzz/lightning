@@ -21,6 +21,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'avatar',
+        'description',
     ];
 
     /**
@@ -42,4 +44,21 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function getAvatarUrl(string $default = 'mp', int $size = 80): string
+    {
+        return sprintf(
+            'https://www.gravatar.com/avatar/%s?d=%s&s=%s',
+            md5(strtolower(trim($this->email))), urlencode($default), $size
+        );
+    }
+
+    protected static function booted(): void
+    {
+        static::creating(function (self $user) {
+            if (! $user->avatar) {
+                $user->avatar = $user->getAvatarUrl();
+            }
+        });
+    }
 }
