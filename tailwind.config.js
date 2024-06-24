@@ -28,4 +28,7 @@ export default {
         },
     },
     plugins: [forms],
+    variants: {
+        backgroundColor: ['responsive', 'hover', 'focus', 'disabled'],
+    }
 };
