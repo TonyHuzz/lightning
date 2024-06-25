@@ -10,7 +10,7 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
-    title: (title) => `${title} - ${appName}`,
+    title: (title) => `${appName}`,
     resolve: (name) => {
         // 設置每個頁面的layout 都會吃 AppLayout.vue
         const pages = import.meta.glob('./Pages/**/*.vue', {eager: true});
