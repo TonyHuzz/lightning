@@ -32,6 +32,9 @@
                                         </button>
                                     </template>
                                     <template #menu="{ close }">
+                                        <DropdownItem :href="$route('user.edit')" icon="heroicons-outline:cog" @click="close" >
+                                            帳號設定
+                                        </DropdownItem>
                                         <DropdownItem :href="$route('logout')" method="post" as="button" icon="heroicons-outline:logout" @click="close">
                                             登出
                                         </DropdownItem>
