@@ -36,6 +36,10 @@ class HandleInertiaRequests extends Middleware
                 'user' => UserPresenter::make(auth()->user()),
             ],
             'title' => config('app.name'),
+            'flash' => [
+                'success' => session('success'),
+                'error' => session('error'),
+            ]
         ];
     }
 }
