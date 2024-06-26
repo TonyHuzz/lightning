@@ -21,7 +21,7 @@ Route::get('/', function () {
     return Inertia::render('HelloWorld', [
         'name' => 'Tony',
     ]);
-});
+})->name('home');
 
 Route::get('about', function () {
     return Inertia::render('About');
@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('user/setting', [UserController::class, 'edit'])->name('user.edit');
     Route::put('user', [UserController::class, 'update'])->name('user.update');
+    Route::delete('user', [UserController::class, 'destroy'])->name('user.destroy');
 });
 
 require __DIR__.'/auth.php';

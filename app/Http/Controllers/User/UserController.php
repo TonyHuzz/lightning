@@ -45,6 +45,15 @@ class UserController extends Controller
        });
 
         return redirect()->back()->with('success', '更新成功');
+    }
 
+    public function destroy()
+    {
+        $user = $this->user();
+
+        auth()->logout();
+        $user->delete();
+
+        return redirect()->route('home')->with('success', '帳號已刪除');
     }
 }

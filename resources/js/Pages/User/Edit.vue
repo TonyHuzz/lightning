@@ -18,6 +18,17 @@
                 </div>
             </div>
         </form>
+
+        <form @submit.prevent="destroy" class="card card-main mt-6">
+            <h1 class="text-3xl font-semibold text-center">刪除帳號</h1>
+            <div class="w-12 mt-1 mx-auto border-b-4 border-red-400"></div>
+
+            <div class="grid gap-6 mt-6 md:grid-cols-2">
+                <div class="md:col-span-2">
+                    <LoadingButton :loading="destroyLoading" class="btn btn-red">刪除帳號</LoadingButton>
+                </div>
+            </div>
+        </form>
     </div>
 </template>
 
@@ -35,6 +46,7 @@ const props = defineProps({
 })
 
 const loading = ref(false);
+const destroyLoading = ref(false);
 
 const form = useForm({
     _method: 'PUT',
@@ -59,6 +71,19 @@ const submit = () => {
             form.reset('password', 'password_confirmation', 'avatar');
         }
     })
+};
+
+const destroy = () => {
+    if (confirm('確定要刪除帳號嗎？')) {
+        form.delete(route('user.destroy'), {
+            onStart() {
+                destroyLoading.value = true;
+            },
+            onFinish() {
+                destroyLoading.value = false;
+            },
+        });
+    }
 }
 
 </script>
