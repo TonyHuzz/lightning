@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Notifications\Notifiable;
@@ -13,7 +14,9 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -48,21 +51,19 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public function posts(): HasMany
+    {
+        return $this->hasMany(Post::class, 'author_id');
+    }
+
     public function getAvatarUrl(string $default = 'mp', int $size = 80): string
     {
         return sprintf(
             'https://www.gravatar.com/avatar/%s?d=%s&s=%s',
-            md5(strtolower(trim($this->email))), urlencode($default), $size
+            md5(strtolower(trim($this->email))),
+            urlencode($default),
+            $size
         );
-    }
-
-    protected static function booted(): void
-    {
-        static::creating(function (self $user) {
-            if (! $user->avatar) {
-                $user->avatar = $user->getAvatarUrl();
-            }
-        });
     }
 
     public function setPasswordAttribute($value): void
@@ -75,5 +76,14 @@ class User extends Authenticatable
         $this->attributes['avatar'] = $avatar instanceof UploadedFile
             ? Storage::url($avatar->store('avatars'))
             : $avatar;
+    }
+
+    protected static function booted(): void
+    {
+        static::creating(function (self $user) {
+            if (!$user->avatar) {
+                $user->avatar = $user->getAvatarUrl();
+            }
+        });
     }
 }
