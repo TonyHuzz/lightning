@@ -1,9 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Post;
 
+use App\Http\Controllers\Controller;
 use App\Models\Post;
+use App\Presenters\PostPresenter;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class PostController extends Controller
 {
@@ -12,7 +15,6 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
     }
 
     /**
@@ -20,7 +22,9 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Post/Form', [
+            'post' => PostPresenter::make(Post::make()),
+        ]);
     }
 
     /**
@@ -28,7 +32,6 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
     }
 
     /**
@@ -36,7 +39,6 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
     }
 
     /**
@@ -44,7 +46,6 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
     }
 
     /**
@@ -52,7 +53,6 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
     }
 
     /**
@@ -60,6 +60,5 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
     }
 }
