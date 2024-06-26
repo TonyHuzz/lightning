@@ -18,7 +18,7 @@
                                 </Link>
                             </li>
                             <li>
-                                <Link :href="$route('register')" class="px-3 py-2 md:px-5 rounded bg-purple-500 text-white hover:bg-purple-700 transition-colors duration-150" >
+                                <Link :href="$route('register')" class="px-3 py-2 md:px-5 rounded bg-purple-500 text-white hover:bg-purple-700 transition-colors duration-150">
                                     註冊
                                 </Link>
                             </li>
@@ -27,12 +27,15 @@
                             <li>
                                 <Dropdown class="text-base">
                                     <template #button="{ open }">
-                                        <button @click="open" class="relative z-10 block h-10 w-10 rounded-full overflow-hidden border-2 border-transparent focus:outline-none focus:border-purple-500" >
+                                        <button @click="open" class="relative z-10 block h-10 w-10 rounded-full overflow-hidden border-2 border-transparent focus:outline-none focus:border-purple-500">
                                             <img class="h-full w-full object-cover" :src="user.avatar" alt="" />
                                         </button>
                                     </template>
                                     <template #menu="{ close }">
-                                        <DropdownItem :href="$route('user.edit')" icon="heroicons-outline:cog" @click="close" >
+                                        <DropdownItem :href="$route('user.profile', { user: user.id })" icon="heroicons-outline:home" @click="close">
+                                            我的主頁
+                                        </DropdownItem>
+                                        <DropdownItem :href="$route('user.edit')" icon="heroicons-outline:cog" @click="close">
                                             帳號設定
                                         </DropdownItem>
                                         <DropdownItem :href="$route('logout')" method="post" as="button" icon="heroicons-outline:logout" @click="close">
