@@ -16,8 +16,8 @@ class PostPresenter extends FlexiblePresenter
             'thumbnail' => $this->thumbnail,
             'visits' => $this->visits,
             'is_published' => $this->is_published,
-            'created_at' => $this->created_at->format('Y-m-d H:i:s'),
-            'created_ago' => $this->created_at->diffForHumans(),
+            'created_at' => $this->created_at?->format('Y-m-d H:i:s'),
+            'created_ago' => $this->created_at?->diffForHumans(),
         ];
     }
 }

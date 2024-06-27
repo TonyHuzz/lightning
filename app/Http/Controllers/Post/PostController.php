@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Post;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Post\PostRequest;
 use App\Models\Post;
 use App\Presenters\PostPresenter;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class PostController extends Controller
 {
@@ -20,7 +22,7 @@ class PostController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): Response
     {
         return Inertia::render('Post/Form', [
             'post' => PostPresenter::make(Post::make()),
@@ -30,8 +32,22 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
+        $attributes = $request->validated();
+
+        $data = [
+            'title' => $attributes['title'],
+            'content' => $attributes['content'],
+            'thumbnail' => $attributes['thumbnail'] ?? null,
+            'is_published' => $request->boolean('is_published'),
+        ];
+
+        $data = collect($data)->reject(fn ($value) => is_null($value))->toArray();
+
+        $post = auth()->user()->posts()->create($data);
+
+        return redirect()->route('posts.show', $post->id)->with('success', '新增成功');
     }
 
     /**
