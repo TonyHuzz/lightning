@@ -1,3 +1,7 @@
 button:focus {
     @apply outline-none;
 }
+
+.checkbox {
+    @apply text-purple-500 outline-none shadow-none mr-2 focus:ring-0 checked:border-purple-500;
+}

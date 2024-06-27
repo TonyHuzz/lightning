@@ -5,11 +5,12 @@
             <div class="w-12 mt-1 mx-auto border-b-4 border-purple-400"></div>
 
             <div class="grid gap-6 mt-6">
-                <TextInput v-model="form.email" :error="form.errors.email" label="E-mail" autocomplete="email" autofocus />
-                <TextInput v-model="form.password" type="password" label="密碼" />
+                <TextInput v-model="form.email" :error="form.errors.email" label="E-mail" autocomplete="email"
+                           autofocus/>
+                <TextInput v-model="form.password" type="password" label="密碼"/>
                 <div>
                     <label>
-                        <input type="checkbox" class="form-checkbox text-purple-500 outline-none shadow-none focus:ring-0 checked:border-purple-500" v-model="form.remember" /> 記住我
+                        <input type="checkbox" class="checkbox" v-model="form.remember"/> 記住我
                     </label>
                 </div>
                 <div>
