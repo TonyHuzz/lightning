@@ -19,7 +19,7 @@
 import {onMounted, ref} from "vue";
 
 const inputModel = defineModel({
-    type: String,
+    type: [String, null],
     required: true,
 });
 

@@ -27,7 +27,7 @@ defineProps({
 });
 
 const inputModel = defineModel({
-    type: String,
+    type: [String, null],
     required: true,
 });
 
