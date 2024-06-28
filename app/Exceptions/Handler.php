@@ -4,9 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
 use Inertia\Inertia;
-use Throwable;
 
 class Handler extends ExceptionHandler
 {
@@ -26,19 +24,18 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->reportable(function (\Throwable $e) {
         });
     }
 
-    public function render($request, Throwable $e): JsonResponse|\Symfony\Component\HttpFoundation\Response
+    public function render($request, \Throwable $e): JsonResponse|\Symfony\Component\HttpFoundation\Response
     {
         $response = parent::render($request, $e);
         $status = $response->getStatusCode();
 
         $errorCode = [
             401 => 'Unauthorized',
-            403 => $e->getMessage() ?: 'Forbidden',
+            403 => '權限不足',
             404 => 'Not Found',
             419 => 'Page Expired',
             429 => 'Too Many Requests',
