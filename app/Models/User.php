@@ -51,9 +51,16 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    /** 文章關聯 */
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class, 'author_id');
+    }
+
+    /** 已發布文章 */
+    public function publishedPosts()
+    {
+        return $this->posts()->published();
     }
 
     public function getAvatarUrl(string $default = 'mp', int $size = 80): string

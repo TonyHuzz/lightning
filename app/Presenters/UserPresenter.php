@@ -3,6 +3,7 @@
 namespace App\Presenters;
 
 use AdditionApps\FlexiblePresenter\FlexiblePresenter;
+use App\Models\User;
 
 class UserPresenter extends FlexiblePresenter
 {
@@ -15,5 +16,12 @@ class UserPresenter extends FlexiblePresenter
             'description' => $this->description,
             'avatar' => $this->avatar,
         ];
+    }
+
+    public function presetWithCount(): UserPresenter
+    {
+        return $this->with(static fn (User $user) => [
+            'postsCount' => $user->publishedPosts()->count(),
+        ]);
     }
 }

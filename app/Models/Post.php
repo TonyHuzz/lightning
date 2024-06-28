@@ -28,6 +28,18 @@ class Post extends Model
         return $this->belongsTo(User::class);
     }
 
+    /** 已發布文章 */
+    public function scopePublished($query)
+    {
+        return $query->where('is_published', true);
+    }
+
+    /** 未發布文章 */
+    public function scopeUnpublished($query)
+    {
+        return $query->where('is_published', false);
+    }
+
     public function setThumbnailAttribute($thumbnail): void
     {
         $this->attributes['thumbnail'] = $thumbnail instanceof UploadedFile
