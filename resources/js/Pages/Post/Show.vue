@@ -12,7 +12,7 @@
     </Head>
 
     <div class="py-6 md:py-8">
-        <Alert v-if="$page.props.flash" class="shadow mb-6">{{ $page.props.flash }}</Alert>
+        <Alert v-if="$page.props.flash.success || $page.props.flash.error" class="shadow mb-6"/>
 
         <div class="grid gap-6 xl:grid-cols-4">
             <div class="card p-6 md:p-8 min-w-0 xl:col-span-3">
