@@ -31,7 +31,7 @@
 <script setup>
 
 import {computed, ref} from "vue";
-import {useForm, useRemember} from "@inertiajs/vue3";
+import {useForm} from "@inertiajs/vue3";
 import TextInput from "@/Components/TextInput.vue";
 import TextAreaInput from "@/Components/TextAreaInput.vue";
 import FileInput from "@/Components/FileInput.vue";
