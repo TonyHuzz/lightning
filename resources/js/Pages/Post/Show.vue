@@ -31,7 +31,7 @@
                     </div>
                 </div>
 
-                <div class="mt-6 font-light break-words">{{ props.post.content }}</div>
+                <Markdown class="mt-6" :value="props.post.content"/>
             </div>
 
             <div>
@@ -68,6 +68,7 @@
 import {Head, Link} from "@inertiajs/vue3";
 import Alert from "@/Components/Alert.vue";
 import Icon from "@/Components/Icon.vue";
+import Markdown from "@/Components/Markdown.vue";
 
 const props = defineProps({
     post: {

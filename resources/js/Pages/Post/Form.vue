@@ -6,7 +6,7 @@
 
             <div class="grid gap-6 mt-6">
                 <TextInput v-model="form.title" :error="form.errors.title" label="標題" autofocus/>
-                <TextAreaInput v-model="form.content" :error="form.errors.content" label="內容"/>
+                <MarkdownInput v-model="form.content" :error="form.errors.content" label="內容" class="min-w-0"/>
                 <FileInput
                     v-model="form.thumbnail"
                     :error="form.errors.thumbnail"
@@ -36,6 +36,7 @@ import TextInput from "@/Components/TextInput.vue";
 import TextAreaInput from "@/Components/TextAreaInput.vue";
 import FileInput from "@/Components/FileInput.vue";
 import LoadingButton from "@/Components/LoadingButton.vue";
+import MarkdownInput from "@/Components/MarkdownInput.vue";
 
 const props = defineProps({
     post: {
