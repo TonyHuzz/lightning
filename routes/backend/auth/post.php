@@ -9,3 +9,4 @@ Route::get('/', [ShowPostList::class, 'index'])->name('home.index');
 Route::resource('posts', PostController::class)->except(['show']);
 Route::get('posts/drafts', [PostController::class, 'drafts'])->name('posts.drafts');
 Route::get('posts/{post}', ShowPostController::class)->name('posts.show');
+Route::post('posts/{post}/like', [PostController::class, 'like'])->name('posts.like');

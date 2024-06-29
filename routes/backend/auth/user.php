@@ -8,3 +8,4 @@ Route::get('user/setting', [UserController::class, 'edit'])->name('user.edit');
 Route::put('user', [UserController::class, 'update'])->name('user.update');
 Route::delete('user', [UserController::class, 'destroy'])->name('user.destroy');
 Route::get('user/{user}', [ProfileController::class, 'index'])->name('user.profile');
+Route::get('user/{user}/likes', [ProfileController::class, 'likes'])->name('user.likes');

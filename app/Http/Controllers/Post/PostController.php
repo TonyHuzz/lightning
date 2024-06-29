@@ -9,6 +9,7 @@ use App\Models\Post;
 use App\Presenters\PostPresenter;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -111,5 +112,23 @@ class PostController extends Controller
             'typeText' => '草稿',
             'posts' => PostPresenter::collection($posts)->preset('list'),
         ]);
+    }
+
+    /**
+     * @throws ValidationException
+     */
+    public function like(Post $post)
+    {
+        if (!$post->is_published) {
+            throw ValidationException::withMessages(['like' => '無法對未發布文章點喜歡']);
+        }
+
+        if ($post->isLikedBy(auth()->user())) {
+            auth()->user()->unlike($post);
+        } else {
+            auth()->user()->like($post);
+        }
+
+        return back();
     }
 }

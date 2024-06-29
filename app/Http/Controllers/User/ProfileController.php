@@ -13,7 +13,7 @@ class ProfileController extends Controller
 {
     public function index(User $user): Response
     {
-        $user->loadCount('publishedPosts');
+        $user->loadCount('publishedPosts', 'likedPosts');
 
         return Inertia::render('User/Profile', [
             'type' => 'show',
@@ -23,9 +23,29 @@ class ProfileController extends Controller
                         ->with('author')
                         ->where('is_published', true)
                         ->latest()
-                        ->paginate()
+                        ->paginate(),
                 )->preset('list'),
                 'postsCount' => $user->published_posts_count,
+                'likesCount' => $user->liked_posts_count,
+            ]),
+        ]);
+    }
+
+    public function likes(User $user): Response
+    {
+        $user->loadCount('publishedPosts', 'likedPosts');
+
+        return Inertia::render('User/Profile', [
+            'type' => 'likes',
+            'user' => UserPresenter::make($user)->with(static fn (User $user) => [
+                'posts' => PostPresenter::collection(
+                    $user->likedPosts()
+                        ->with('author')
+                        ->latest()
+                        ->paginate(),
+                )->preset('list'),
+                'postsCount' => $user->published_posts_count,
+                'likesCount' => $user->liked_posts_count,
             ]),
         ]);
     }

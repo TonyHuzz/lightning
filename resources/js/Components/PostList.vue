@@ -20,6 +20,10 @@
                         <Icon :style="'w-4 h-4 text-purple-500'" icon="heroicons-outline:clock"/>
                         {{ post.created_ago }}
                     </div>
+                    <div>
+                        <Icon :style="'w-4 h-4 text-purple-500'" icon="heroicons-outline:heart"/>
+                        {{ post.likes }}
+                    </div>
                     <slot name="info-after" :post="post"/>
                 </div>
             </li>

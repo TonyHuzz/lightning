@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\UploadedFile;
@@ -11,12 +12,14 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
+use Multicaret\Acquaintances\Traits\CanLike;
 
 class User extends Authenticatable
 {
     use HasApiTokens;
     use HasFactory;
     use Notifiable;
+    use CanLike;
 
     /**
      * The attributes that are mass assignable.
@@ -61,6 +64,11 @@ class User extends Authenticatable
     public function publishedPosts()
     {
         return $this->posts()->published();
+    }
+
+    public function likedPosts(): BelongsToMany
+    {
+        return $this->likes(Post::class)->published();
     }
 
     public function getAvatarUrl(string $default = 'mp', int $size = 80): string

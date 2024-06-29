@@ -19,6 +19,7 @@ class PostPresenter extends FlexiblePresenter
             'thumbnail' => $this->thumbnail,
             'visits' => $this->visits,
             'is_published' => $this->is_published,
+            'likes' => (int)$this->likersCountReadable(),
             'created_at' => $this->created_at?->format('Y-m-d H:i:s'),
             'created_ago' => $this->created_at?->diffForHumans(),
         ];
@@ -29,13 +30,14 @@ class PostPresenter extends FlexiblePresenter
         // 避免在閉包中使用 $this 噴錯，因此將 $this 指派給 $presenter
         $presenter = $this;
 
-        return $this->with(static fn (Post $post) => [
+        return $this->with(fn (Post $post) => [
             'content' => $post->content,
             'author' => fn () => UserPresenter::make($post->author)->preset('withCount'),
             'can' => [
                 'update' => $presenter->userCan('update', $post),
                 'delete' => $presenter->userCan('delete', $post),
             ],
+            'is_liked' => $this->user() && $post->isLikedBy($this->user()),
         ]);
     }
 

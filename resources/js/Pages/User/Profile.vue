@@ -16,6 +16,10 @@
                             <Icon icon="heroicons-outline:book-open"/>
                             文章 {{ user.postsCount }}
                         </Tab>
+                        <Tab name="likes" :url="$route('user.likes', { user: user.id })">
+                            <icon icon="heroicons-outline:heart"/>
+                            喜歡 {{ user.likesCount }}
+                        </Tab>
                     </Tabs>
                 </div>
             </div>

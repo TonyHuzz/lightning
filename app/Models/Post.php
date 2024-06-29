@@ -8,10 +8,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Multicaret\Acquaintances\Traits\CanBeLiked;
 
 class Post extends Model
 {
     use HasFactory;
+    use CanBeLiked;
 
     protected $fillable = [
         'title', 'description', 'content', 'thumbnail', 'visits', 'is_published',

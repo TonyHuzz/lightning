@@ -42,26 +42,39 @@
 
                 <Markdown class="mt-6" :value="props.post.content"/>
 
-                <div class="flex space-x-2 md:space-x-3 mt-6 font-light">
+                <div class="flex flex-wrap space-x-2 md:space-x-3 mt-6 font-light">
+                    <Link
+                        :href="$route('posts.like', { post: post.id })"
+                        method="post"
+                        as="button"
+                        class="btn btn-purple-light text-sm px-3 py-1 mb-2"
+                    >
+                        <Icon :style="'mr-1 text-purple-500'" :icon="!post.is_liked
+                            ? 'heroicons-outline:heart'
+                            : 'heroicons-solid:heart'"
+                        />
+                        喜歡 | {{ post.likes }}
+                    </Link>
                     <Link v-if="post.can.update"
                           :href="$route('posts.edit', { post: post.id })"
-                          class="btn btn-blue-light text-sm px-3 py-1"
+                          class="btn btn-blue-light text-sm px-3 py-1 mb-2"
                     >
                         <icon class="mr-1" icon="heroicons-outline:pencil"/>
                         編輯
                     </Link>
                     <a v-if="post.can.delete"
                        :href="$route('posts.destroy', { post: post.id })"
-                       class="btn btn-red-light text-sm px-3 py-1"
+                       class="btn btn-red-light text-sm px-3 py-1 mb-2"
                        @click.prevent="destroy(post)"
                     >
                         <icon class="mr-1" icon="heroicons-outline:trash"/>
                         刪除
                     </a>
                 </div>
-
+                <div v-if="$page.props.errors.like" class="form-error">{{ $page.props.errors.like }}</div>
             </div>
 
+            <!-- 作者卡片 -->
             <div>
                 <div class="card p-6 md:p-8 sticky top-8">
                     <Link :href="$route('user.profile', { user: props.post.author.id })">
@@ -80,6 +93,10 @@
                             <Link :href="$route('user.profile', { user: props.post.author.id })">
                                 <Icon icon="heroicons-outline:book-open"/>
                                 文章 {{ props.post.author.postsCount }}
+                            </Link>
+                            <Link :href="$route('user.likes', { user: post.author.id })" class="link font-light">
+                                <Icon icon="heroicons-outline:heart"/>
+                                喜歡 {{ post.author.likesCount }}
                             </Link>
                         </div>
                     </div>
