@@ -7,8 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Post\PostRequest;
 use App\Models\Post;
 use App\Presenters\PostPresenter;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -58,31 +58,41 @@ class PostController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @throws AuthorizationException
      */
-    public function show(Post $post)
+    public function edit(Post $post): Response
     {
+        $this->authorize('update', $post);
+
+        return Inertia::render('Post/Form', [
+            'post' => PostPresenter::make($post)->with(static fn (Post $post) => [
+                'content' => $post->content,
+            ]),
+        ]);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * @throws AuthorizationException
      */
-    public function edit(Post $post)
+    public function update(PostRequest $request, Post $post): RedirectResponse
     {
+        $this->authorize('update', $post);
+
+        $post->update($request->validated());
+
+        return redirect()->route('posts.show', $post->id)->with('success', '更新成功');
     }
 
     /**
-     * Update the specified resource in storage.
+     * @throws AuthorizationException
      */
-    public function update(Request $request, Post $post)
+    public function destroy(Post $post): RedirectResponse
     {
-    }
+        $this->authorize('delete', $post);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Post $post)
-    {
+        $post->delete();
+
+        return redirect()->route('posts.index')->with('success', '刪除成功');
     }
 
     /**

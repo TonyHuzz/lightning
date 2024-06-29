@@ -4,9 +4,12 @@ namespace App\Presenters;
 
 use AdditionApps\FlexiblePresenter\FlexiblePresenter;
 use App\Models\Post;
+use App\Presenters\Concerns\HasAuthUser;
 
 class PostPresenter extends FlexiblePresenter
 {
+    use HasAuthUser;
+
     public function values(): array
     {
         return [
@@ -23,9 +26,16 @@ class PostPresenter extends FlexiblePresenter
 
     public function presetShow(): PostPresenter
     {
+        // 避免在閉包中使用 $this 噴錯，因此將 $this 指派給 $presenter
+        $presenter = $this;
+
         return $this->with(static fn (Post $post) => [
             'content' => $post->content,
-            'author' => static fn () => UserPresenter::make($post->author)->preset('withCount'),
+            'author' => fn () => UserPresenter::make($post->author)->preset('withCount'),
+            'can' => [
+                'update' => $presenter->userCan('update', $post),
+                'delete' => $presenter->userCan('delete', $post),
+            ],
         ]);
     }
 

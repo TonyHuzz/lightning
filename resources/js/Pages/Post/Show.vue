@@ -17,7 +17,7 @@
         <div class="grid gap-6 xl:grid-cols-4">
             <div class="card p-6 md:p-8 min-w-0 xl:col-span-3">
                 <h1 class="text-3xl font-semibold leading-snug">{{ props.post.title }}</h1>
-                <div class="flex space-x-4 mt-2 text-sm">
+                <div class="flex flex-wrap space-x-4 mt-2 text-sm">
                     <div>
                         <Icon :style="'text-purple-500 mr-1'" icon="heroicons-outline:clock"/>
                         <span class="text-gray-500">{{ props.post.created_at }}</span>
@@ -29,9 +29,37 @@
                     <div v-if="!props.post.is_published">
                         <span class="px-2 py-1 bg-green-100 text-green-700">草稿</span>
                     </div>
+                    <Link v-if="post.can.update" :href="$route('posts.edit', { post: post.id })" class="link">
+                        <icon icon="heroicons-outline:pencil"/>
+                        編輯
+                    </Link>
+                    <a v-if="post.can.delete" :href="$route('posts.destroy', { post: post.id })" class="link"
+                       @click.prevent="destroy(post)">
+                        <icon icon="heroicons-outline:trash"/>
+                        刪除
+                    </a>
                 </div>
 
                 <Markdown class="mt-6" :value="props.post.content"/>
+
+                <div class="flex space-x-2 md:space-x-3 mt-6 font-light">
+                    <Link v-if="post.can.update"
+                          :href="$route('posts.edit', { post: post.id })"
+                          class="btn btn-blue-light text-sm px-3 py-1"
+                    >
+                        <icon class="mr-1" icon="heroicons-outline:pencil"/>
+                        編輯
+                    </Link>
+                    <a v-if="post.can.delete"
+                       :href="$route('posts.destroy', { post: post.id })"
+                       class="btn btn-red-light text-sm px-3 py-1"
+                       @click.prevent="destroy(post)"
+                    >
+                        <icon class="mr-1" icon="heroicons-outline:trash"/>
+                        刪除
+                    </a>
+                </div>
+
             </div>
 
             <div>
@@ -65,7 +93,7 @@
 
 
 <script setup>
-import {Head, Link} from "@inertiajs/vue3";
+import {Head, Link, router} from "@inertiajs/vue3";
 import Alert from "@/Components/Alert.vue";
 import Icon from "@/Components/Icon.vue";
 import Markdown from "@/Components/Markdown.vue";
@@ -75,6 +103,12 @@ const props = defineProps({
         type: Object,
     }
 });
+
+const destroy = (post) => {
+    if (confirm('確定要刪除這篇文章嗎？')) {
+        post.delete(route('posts.destroy', {post: post.id}));
+    }
+};
 
 
 </script>
