@@ -2,10 +2,14 @@ import './bootstrap';
 import '../css/app.css';
 import '@purge-icons/generated';
 
-import { createApp, h } from 'vue';
-import { createInertiaApp } from '@inertiajs/vue3';
-import { ZiggyVue } from '../../vendor/tightenco/ziggy';
+import {createApp, h} from 'vue';
+import {createInertiaApp} from '@inertiajs/vue3';
+import {ZiggyVue} from '../../vendor/tightenco/ziggy';
 import AppLayout from "@/Layouts/AppLayout.vue";
+import mavonEditor from 'mavon-editor';
+import 'mavon-editor/dist/css/index.css';
+import 'mavon-editor/dist/markdown/github-markdown.min.css'
+import 'mavon-editor/dist/highlightjs/styles/atom-one-dark.min.css'
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -18,17 +22,17 @@ createInertiaApp({
         page.default.layout = page.default.layout || AppLayout;
         return page;
     },
-    setup({ el, App, props, plugin }) {
-        const app = createApp({ render: () => h(App, props) })
+    setup({el, App, props, plugin}) {
+        const app = createApp({render: () => h(App, props)})
             .use(plugin)
             .use(ZiggyVue)
-
-        // 可以在Vue组件中使用$route方法
-        app.mixin({
-            methods: {
-                $route: (name, params, absolute, config = Ziggy) => route(name, params, absolute, config),
-            },
-        });
+            .use(mavonEditor)
+            // 可以在Vue template中使用$route方法
+            .mixin({
+                methods: {
+                    $route: (name, params, absolute, config = Ziggy) => route(name, params, absolute, config),
+                }
+            })
 
         app.mount(el);
 
