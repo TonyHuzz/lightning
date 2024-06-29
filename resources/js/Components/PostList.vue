@@ -1,7 +1,7 @@
 <template>
     <div>
-        <ul v-if="posts.length" class="divide-y -my-6">
-            <li v-for="post in posts" class="py-6">
+        <ul v-if="posts.data.length" class="divide-y -my-6">
+            <li v-for="post in posts.data" class="py-6">
                 <h2>
                     <Link :href="$route('posts.show', { post: post.id })"
                           class="text-xl font-medium hover:text-purple-500 transition-colors duration-100">
@@ -26,18 +26,20 @@
         </ul>
 
         <div v-else class="text-center text-gray-400 mt-8 mb-4">{{ empty }}</div>
-    </div>
 
+        <Pagination v-if="posts.showPaginator" class="mt-8" :links="posts.links"/>
+    </div>
 </template>
 
 <script setup>
 
 import {Link} from "@inertiajs/vue3";
 import Icon from "@/Components/Icon.vue";
+import Pagination from "@/Components/Pagination.vue";
 
 const props = defineProps({
     posts: {
-        type: Array,
+        type: Object,
         required: true,
     },
     hideAuthor: {

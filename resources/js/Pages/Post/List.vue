@@ -42,7 +42,7 @@ import Tab from "@/Components/Tab.vue";
 const props = defineProps({
     type: String,
     typeText: String,
-    posts: Array,
+    posts: Object,
 });
 
 </script>

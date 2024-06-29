@@ -23,6 +23,8 @@ class Post extends Model
         'author_id' => 'integer',
     ];
 
+    protected $perPage = 10;
+
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class);

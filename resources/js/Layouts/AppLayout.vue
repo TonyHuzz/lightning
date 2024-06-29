@@ -43,6 +43,14 @@
                                                       @click="close">
                                             撰寫文章
                                         </DropdownItem>
+                                        <DropdownItem :href="$route('posts.index')" icon="heroicons-outline:book-open"
+                                                      @click="close">
+                                            我的文章
+                                        </DropdownItem>
+                                        <DropdownItem :href="$route('posts.drafts')"
+                                                      icon="heroicons-outline:document-text" @click="close">
+                                            我的草稿
+                                        </DropdownItem>
                                         <DropdownItem :href="$route('user.edit')" icon="heroicons-outline:cog"
                                                       @click="close">
                                             帳號設定

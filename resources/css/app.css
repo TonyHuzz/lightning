@@ -6,5 +6,6 @@
 @import "form.css";
 @import "button.css";
 @import "mavonEditor.css";
+@import "pagination.css";
 
 @import "tailwindcss/utilities";
