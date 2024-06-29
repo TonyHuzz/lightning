@@ -6,48 +6,52 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UpdateRequest;
 use App\Presenters\UserPresenter;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class UserController extends Controller
 {
-
     public function user(): ?Authenticatable
     {
         return auth()->user();
     }
 
+    public function index()
+    {
+    }
+
     public function edit(): Response
     {
-        return Inertia::render('User/Edit' ,[
-            'user' => UserPresenter::make($this->user())
+        return Inertia::render('User/Edit', [
+            'user' => UserPresenter::make($this->user()),
         ]);
     }
 
-    public function update(UpdateRequest $request)
+    public function update(UpdateRequest $request): RedirectResponse
     {
         $user = $this->user();
 
         $attributes = $request->validated();
 
-       tap($user, static function ($user) use ($attributes) {
-           if (isset($attributes['password'])) {
-               $user->password = $attributes['password'];
-           }
+        tap($user, static function ($user) use ($attributes) {
+            if (isset($attributes['password'])) {
+                $user->password = $attributes['password'];
+            }
 
-           if (isset($attributes['avatar'])) {
-               $user->avatar = $attributes['avatar'];
-           }
+            if (isset($attributes['avatar'])) {
+                $user->avatar = $attributes['avatar'];
+            }
 
-           $attributes = collect($attributes)->except(['password', 'avatar'])->toArray();
+            $attributes = collect($attributes)->except(['password', 'avatar'])->toArray();
 
-           $user->update($attributes);
-       });
+            $user->update($attributes);
+        });
 
         return redirect()->back()->with('success', '更新成功');
     }
 
-    public function destroy()
+    public function destroy(): RedirectResponse
     {
         $user = $this->user();
 
