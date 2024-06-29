@@ -28,6 +28,8 @@ class Post extends Model
 
     protected $perPage = 10;
 
+    protected ?bool $isLikedCache = null;
+
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -43,6 +45,15 @@ class Post extends Model
     public function scopeUnpublished($query)
     {
         return $query->where('is_published', false);
+    }
+
+    public function getIsLikedAttributes(): ?bool
+    {
+        if (is_null($this->isLikedCache)) {
+            $this->isLikedCache = auth()->user() ? $this->isLikedBy(auth()->user()) : false;
+        }
+
+        return $this->isLikedCache;
     }
 
     public function setThumbnailAttribute($thumbnail): void

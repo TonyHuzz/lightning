@@ -21,6 +21,10 @@ class ShowPostController extends Controller
 
         return Inertia::render('Post/Show', [
             'post' => PostPresenter::make($post)->preset('show'),
+            'postOnlyLikes' => PostPresenter::make($post)->only('likes')
+                ->with(fn (Post $post) => [
+                    'is_liked' => $post->is_liked,
+                ]),
         ]);
     }
 

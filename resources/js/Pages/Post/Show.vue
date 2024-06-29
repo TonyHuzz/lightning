@@ -48,12 +48,14 @@
                         method="post"
                         as="button"
                         class="btn btn-purple-light text-sm px-3 py-1 mb-2"
+                        preserveScroll
+                        :only="['postOnlyLikes', 'errors']"
                     >
-                        <Icon :style="'mr-1 text-purple-500'" :icon="!post.is_liked
+                        <Icon :style="'mr-1 text-purple-500'" :icon="!postOnlyLikes.is_liked
                             ? 'heroicons-outline:heart'
                             : 'heroicons-solid:heart'"
                         />
-                        喜歡 | {{ post.likes }}
+                        喜歡 | {{ postOnlyLikes.likes }}
                     </Link>
                     <Link v-if="post.can.update"
                           :href="$route('posts.edit', { post: post.id })"
@@ -118,7 +120,10 @@ import Markdown from "@/Components/Markdown.vue";
 const props = defineProps({
     post: {
         type: Object,
-    }
+    },
+    postOnlyLikes: {
+        type: Object,
+    },
 });
 
 const destroy = (post) => {
