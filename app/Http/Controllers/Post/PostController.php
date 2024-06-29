@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Post;
 
+use AdditionApps\FlexiblePresenter\Exceptions\InvalidPresenterPreset;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Post\PostRequest;
 use App\Models\Post;
 use App\Presenters\PostPresenter;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -13,26 +15,31 @@ use Inertia\Response;
 class PostController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @throws InvalidPresenterPreset
      */
-    public function index()
+    public function index(): Response
     {
+        $posts = auth()->user()
+            ->posts()
+            ->where('is_published', true)
+            ->latest()
+            ->get();
+
+        return Inertia::render('Post/List', [
+            'type' => 'published',
+            'typeText' => '文章',
+            'posts' => PostPresenter::collection($posts)->preset('list'),
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create(): Response
     {
-        return Inertia::render('Post/Form', [
+        return Inertia::render('Post/Create', [
             'post' => PostPresenter::make(Post::make()),
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(PostRequest $request)
+    public function store(PostRequest $request): RedirectResponse
     {
         $attributes = $request->validated();
 
@@ -76,5 +83,23 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+    }
+
+    /**
+     * @throws InvalidPresenterPreset
+     */
+    public function drafts(): Response
+    {
+        $posts = auth()->user()
+            ->posts()
+            ->where('is_published', false)
+            ->latest()
+            ->get();
+
+        return Inertia::render('Post/List', [
+            'type' => 'drafts',
+            'typeText' => '草稿',
+            'posts' => PostPresenter::collection($posts)->preset('list'),
+        ]);
     }
 }

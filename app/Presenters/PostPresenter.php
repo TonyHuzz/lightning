@@ -28,4 +28,12 @@ class PostPresenter extends FlexiblePresenter
             'author' => static fn () => UserPresenter::make($post->author)->preset('withCount'),
         ]);
     }
+
+    public function presetList(): PostPresenter
+    {
+        return $this->with(static fn (Post $post) => [
+            'author' => static fn () => UserPresenter::make($post->author)
+                ->only('id', 'name', 'avatar'),
+        ]);
+    }
 }
