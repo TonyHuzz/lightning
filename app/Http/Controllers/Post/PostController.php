@@ -51,7 +51,7 @@ class PostController extends Controller
             'is_published' => $request->boolean('is_published'),
         ];
 
-        $data = collect($data)->reject(fn ($value) => is_null($value))->toArray();
+        $data = collect($data)->reject(fn($value) => is_null($value))->toArray();
 
         $post = auth()->user()->posts()->create($data);
 
@@ -66,7 +66,7 @@ class PostController extends Controller
         $this->authorize('update', $post);
 
         return Inertia::render('Post/Form', [
-            'post' => PostPresenter::make($post)->with(static fn (Post $post) => [
+            'post' => PostPresenter::make($post)->with(static fn(Post $post) => [
                 'content' => $post->content,
             ]),
         ]);
@@ -117,7 +117,7 @@ class PostController extends Controller
     /**
      * @throws ValidationException
      */
-    public function like(Post $post)
+    public function like(Post $post): RedirectResponse
     {
         if (!$post->is_published) {
             throw ValidationException::withMessages(['like' => '無法對未發布文章點喜歡']);
