@@ -17,6 +17,8 @@ class ShowPostController extends Controller
 
         $this->incrementVisits($post);
 
+        $post->load(['author' => fn ($query) => $query->withCount('publishedPosts', 'likedPosts')]);
+
         return Inertia::render('Post/Show', [
             'post' => PostPresenter::make($post)->preset('show'),
         ]);

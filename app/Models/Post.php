@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Acquaintances\CanBeLiked;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Multicaret\Acquaintances\Traits\CanBeLiked;
 
 class Post extends Model
 {
@@ -62,6 +63,11 @@ class Post extends Model
         static::updating(function (self $post) {
             $post->updateDescription();
         });
+    }
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope('likes', fn (Builder $builder) => $builder->withCount('likers'));
     }
 
     private function updateDescription(): static

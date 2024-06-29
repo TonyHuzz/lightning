@@ -3,6 +3,7 @@
 namespace App\Presenters;
 
 use AdditionApps\FlexiblePresenter\FlexiblePresenter;
+use App\Acquaintances\Interaction;
 use App\Models\Post;
 use App\Presenters\Concerns\HasAuthUser;
 
@@ -17,9 +18,9 @@ class PostPresenter extends FlexiblePresenter
             'title' => $this->title,
             'description' => $this->description,
             'thumbnail' => $this->thumbnail,
-            'visits' => $this->visits,
             'is_published' => $this->is_published,
-            'likes' => (int)$this->likersCountReadable(),
+            'visits' => Interaction::numberToReadable($this->visits),
+            'likes' => $this->likersCountReadable(),
             'created_at' => $this->created_at?->format('Y-m-d H:i:s'),
             'created_ago' => $this->created_at?->diffForHumans(),
         ];
