@@ -25,6 +25,7 @@
     "dependencies": {
         "@iconify/iconify": "^3.1.1",
         "highlight.js": "^11.9.0",
+        "highlightjs-vue": "^1.0.0",
         "markdown-it": "^14.1.0",
         "markdown-it-ins": "^4.0.0",
         "markdown-it-task-lists": "^2.1.1"
