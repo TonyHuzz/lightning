@@ -105,6 +105,14 @@
 
                 </div>
             </div>
+
+
+            <div class="min-w-0 xl:col-span-3">
+                <div class="card p-6 md:p-8">
+                    <h3 class="text-2xl font-semibold">留言</h3>
+                    <CommentForm :post="post" :enabled="Boolean($page.props.auth.user)" class="mt-6"/>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -112,10 +120,11 @@
 
 
 <script setup>
-import {Head, Link, router} from "@inertiajs/vue3";
+import {Head, Link} from "@inertiajs/vue3";
 import Alert from "@/Components/Alert.vue";
 import Icon from "@/Components/Icon.vue";
 import Markdown from "@/Components/Markdown.vue";
+import CommentForm from "@/Components/CommentForm.vue";
 
 const props = defineProps({
     post: {
