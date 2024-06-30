@@ -18,6 +18,16 @@
                         <Icon :style="'w-4 h-4 text-purple-500'" icon="heroicons-outline:clock"/>
                         {{ comment.created_at }}
                     </div>
+                    <div>
+                        <a v-if="comment.can.delete"
+                           :href="$route('comments.destroy', { comment: comment.id })"
+                           class="link inline-flex items-center"
+                           @click.prevent="destroy(comment)"
+                        >
+                            <Icon icon="heroicons-outline:trash"/>
+                            刪除
+                        </a>
+                    </div>
                 </div>
 
                 <Markdown class="mt-3" :value="comment.content"/>
@@ -27,11 +37,19 @@
 </template>
 
 <script setup>
-import {Link} from "@inertiajs/vue3";
+import {Link, router} from "@inertiajs/vue3";
 import Icon from "@/Components/Icon.vue";
 import Markdown from "@/Components/Markdown.vue";
 
 const props = defineProps({
     comments: Array,
 });
+
+const destroy = (comment) => {
+    if (confirm('確定要刪除留言？')) {
+        router.delete(route('comments.destroy', {comment: comment.id}), {
+            preserveScroll: true,
+        });
+    }
+};
 </script>

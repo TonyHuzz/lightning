@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Post;
 
 use App\Http\Controllers\Controller;
+use App\Models\Comment;
 use App\Models\Post;
 use App\Presenters\CommentPresenter;
 use App\Presenters\PostPresenter;
@@ -30,7 +31,8 @@ class ShowPostController extends Controller
                 $post->comments()
                     ->with('commenter')
                     ->latest()
-                    ->get(),
+                    ->get()
+                    ->map(fn (Comment $comment) => $comment->setRelation('post', $post)),
             ),
         ]);
     }

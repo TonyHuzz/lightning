@@ -43,6 +43,7 @@ const form = useForm({
 const submit = () => {
     form.post(route('post.comments.store', {post: props.post.id}), {
         preserveScroll: true,
+        only: ['comments', 'errors'],
         onStart() {
             loading.value = true;
         },

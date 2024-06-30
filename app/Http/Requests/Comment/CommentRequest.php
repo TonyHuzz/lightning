@@ -13,7 +13,7 @@ class CommentRequest extends FormRequest
         ];
     }
 
-    public function attributes()
+    public function attributes(): array
     {
         return [
             'content' => '留言',
