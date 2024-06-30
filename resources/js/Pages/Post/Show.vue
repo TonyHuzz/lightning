@@ -111,6 +111,8 @@
                 <div class="card p-6 md:p-8">
                     <h3 class="text-2xl font-semibold">留言</h3>
                     <CommentForm :post="post" :enabled="Boolean($page.props.auth.user)" class="mt-6"/>
+
+                    <CommentList :comments="comments" class="mt-6 -mb-6"/>
                 </div>
             </div>
         </div>
@@ -125,6 +127,7 @@ import Alert from "@/Components/Alert.vue";
 import Icon from "@/Components/Icon.vue";
 import Markdown from "@/Components/Markdown.vue";
 import CommentForm from "@/Components/CommentForm.vue";
+import CommentList from "@/Components/CommentList.vue";
 
 const props = defineProps({
     post: {
@@ -133,6 +136,7 @@ const props = defineProps({
     postOnlyLikes: {
         type: Object,
     },
+    comments: Array,
 });
 
 const destroy = (post) => {

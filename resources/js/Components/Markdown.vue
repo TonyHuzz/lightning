@@ -24,7 +24,10 @@ const renderedContent = computed(() => {
         highlight(code, lang) {
             if (lang && hljs.getLanguage(lang)) {
                 try {
-                    return `<pre class="hljs"><code>${hljs.highlight(lang, code, true).value}</code></pre>`
+                    return `<pre class="hljs"><code>${hljs.highlight(code, {
+                        language: lang,
+                        ignoreIllegals: true
+                    }).value}</code></pre>`
                 } catch (_) {
                 }
             }
